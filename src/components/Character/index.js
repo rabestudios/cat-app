@@ -18,14 +18,14 @@ const Character = ({ x, y, color, charImg, loadCharacter, bufferImage }) => {
       ctx.beginPath();
       ctx.moveTo(imageX - TILE_SIZE / 4, imageY - TILE_SIZE / 3);
       ctx.lineTo(imageX + 10, imageY + 5);
-      ctx.lineTo(imageX - 10, imageY);
+      ctx.lineTo(imageX - TILE_SIZE / 4, imageY);
       ctx.fillStyle = color;
       ctx.fill();
 
-      // // right ear
+      // right ear
       ctx.beginPath();
       ctx.moveTo(imageX + TILE_SIZE / 4, imageY - TILE_SIZE / 3);
-      ctx.lineTo(imageX + 10, imageY + 5);
+      ctx.lineTo(imageX + TILE_SIZE / 4, imageY);
       ctx.lineTo(imageX, imageY);
       ctx.fillStyle = color;
       ctx.fill();
