@@ -25,6 +25,7 @@ const Map = ({ loadMap }) => {
           const tile = MAP_TILE_TYPES[item];
           if (ctx) {
             ctx.fillStyle = tile.color;
+            ctx.strokeRect(x, y, TILE_SIZE, TILE_SIZE);
             ctx.fillRect(x, y, TILE_SIZE, TILE_SIZE);
           }
         }

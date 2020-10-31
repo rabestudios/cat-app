@@ -7,9 +7,18 @@ function App() {
     <div>
       <header />
       <main>
-        <GameLoop>
-          <TileView />
-        </GameLoop>
+        <div
+          style={{
+            display: "flex",
+            justifyContent: "center",
+            alignItems: "center",
+            height: "100vh",
+          }}
+        >
+          <GameLoop>
+            <TileView />
+          </GameLoop>
+        </div>
       </main>
     </div>
   );
