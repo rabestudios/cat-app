@@ -1,6 +1,6 @@
 import { useCallback, useEffect, useRef, useState } from "react";
 import { MAP_DIMENSIONS, MOVE_DIRECTIONS, TILE_SIZE } from "constants/map";
-import { checkMapCollisioon } from "utils";
+import { checkMapCollision } from "utils";
 import CanvasContext from "context/canvas.context";
 
 const GameLoop = ({ children, character, move }) => {
@@ -18,7 +18,7 @@ const GameLoop = ({ children, character, move }) => {
       const key = e.key;
       if (MOVE_DIRECTIONS[key]) {
         const [x, y] = MOVE_DIRECTIONS[key];
-        if (!checkMapCollisioon(character.x + x, character.y + y)) {
+        if (!checkMapCollision(character.x + x, character.y + y)) {
           setIsUpdateRequired(true);
           move([x, y]);
         }

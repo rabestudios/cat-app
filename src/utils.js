@@ -14,6 +14,6 @@ export const isMapEdge = (x, y) => {
   return x < 0 || x >= COLS || y < 0 || y >= ROWS;
 };
 
-export const checkMapCollisioon = (x, y) => {
+export const checkMapCollision = (x, y) => {
   return isMapEdge(x, y) || isSolidTile(x, y);
 };

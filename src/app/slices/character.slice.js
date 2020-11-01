@@ -4,10 +4,10 @@ import { CAT_COLOURS } from "constants/character";
 const characterSlice = createSlice({
   name: "character",
   initialState: {
+    id: "myplayer",
     x: 6,
     y: 6,
-    color: CAT_COLOURS.blue,
-    charImg: null,
+    color: CAT_COLOURS.red,
   },
   reducers: {
     move(state, action) {
@@ -15,12 +15,9 @@ const characterSlice = createSlice({
       state.x += x;
       state.y += y;
     },
-    bufferImage(state, action) {
-      state.charImg = action.payload;
-    },
   },
 });
 
-export const { move, bufferImage } = characterSlice.actions;
+export const { move } = characterSlice.actions;
 
 export default characterSlice.reducer;

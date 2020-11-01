@@ -1,14 +1,12 @@
-import React, { useContext, useEffect, useRef } from "react";
-import { CAT_SPRITE } from "constants/character";
+import React, { useContext, useEffect } from "react";
 import CanvasContext from "context/canvas.context";
 import { TILE_SIZE } from "constants/map";
 
-const Character = ({ x, y, color, charImg, loadCharacter, bufferImage }) => {
+const Character = ({ x, y, color, loadCharacter }) => {
   const ctx = useContext(CanvasContext);
-  const imgRef = useRef(null);
 
   useEffect(() => {
-    if (charImg && ctx) {
+    if (ctx) {
       const radius = TILE_SIZE / 4;
       const offset = radius * 2;
       const imageX = x * TILE_SIZE + offset;
@@ -37,19 +35,9 @@ const Character = ({ x, y, color, charImg, loadCharacter, bufferImage }) => {
       ctx.fill();
       loadCharacter(true);
     }
-  }, [ctx, charImg, x, y, loadCharacter, color]);
+  }, [ctx, x, y, loadCharacter, color]);
 
-  return (
-    <img
-      id="character"
-      alt="character"
-      ref={imgRef}
-      onLoad={() => bufferImage(`#${imgRef.current.id}`)}
-      className="images-buffer"
-      src={CAT_SPRITE}
-      style={{ display: "none" }}
-    />
-  );
+  return <div />;
 };
 
 export default Character;
