@@ -1,6 +1,6 @@
 import { connect } from "react-redux";
 import { loadCharacter } from "app/slices/status.slice";
-import Character from "../index";
+import Character from "components/game/Character/index";
 
 const mapStateToProps = state => ({ ...state.character });
 

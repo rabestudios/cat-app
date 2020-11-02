@@ -1,26 +1,29 @@
 import React from "react";
-import GameLoop from "components/GameLoop/container";
-import TileView from "components/TileView/container";
+import GameLoop from "components/game/GameLoop/container";
+import TileView from "components/game/TileView/container";
+import AppBar from "components/ui/AppBar";
+import styled from "styled-components";
+
+const GameContainer = styled.div`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 50px;
+`;
 
 function App() {
   return (
-    <div>
+    <>
       <header />
       <main>
-        <div
-          style={{
-            display: "flex",
-            justifyContent: "center",
-            alignItems: "center",
-            height: "100vh",
-          }}
-        >
+        <AppBar />
+        <GameContainer>
           <GameLoop>
             <TileView />
           </GameLoop>
-        </div>
+        </GameContainer>
       </main>
-    </div>
+    </>
   );
 }
 

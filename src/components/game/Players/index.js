@@ -1,5 +1,5 @@
 import React from "react";
-import Character from "components/Character";
+import Character from "components/game/Character";
 
 const Players = ({ players, loadCharacter }) => {
   return (

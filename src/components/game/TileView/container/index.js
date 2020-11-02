@@ -1,5 +1,5 @@
 import { connect } from "react-redux";
-import TileView from "../index";
+import TileView from "components/game/TileView/index";
 
 const mapStateToProps = ({ gameStatus }) => ({ gameStatus });
 

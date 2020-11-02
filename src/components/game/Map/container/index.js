@@ -1,6 +1,6 @@
 import { connect } from "react-redux";
 import { loadMap } from "app/slices/status.slice";
-import Map from "../index";
+import Map from "components/game/Map/index";
 
 const mapDispatch = { loadMap };
 
