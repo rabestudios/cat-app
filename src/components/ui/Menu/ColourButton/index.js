@@ -1,8 +1,14 @@
 import React from "react";
 import { ButtonBase, Tooltip } from "@material-ui/core";
-import { Check } from "@material-ui/icons";
+import { Check, NotInterested } from "@material-ui/icons";
 
-const ColourButton = ({ name, colour, onClick, isSelected }) => {
+const ColourButton = ({
+  name,
+  colour,
+  onClick,
+  isSelected,
+  isUnavailable
+}) => {
   return (
     <Tooltip title={name} placement="top">
       <ButtonBase
@@ -11,10 +17,13 @@ const ColourButton = ({ name, colour, onClick, isSelected }) => {
           height: 50,
           background: colour,
           color: "white",
+          borderRadius: 10,
         }}
         onClick={onClick}
+        disabled={isUnavailable}
       >
         {isSelected && <Check fontSize="small" />}
+        {isUnavailable && <NotInterested fontSize="small" />}
       </ButtonBase>
     </Tooltip>
   );

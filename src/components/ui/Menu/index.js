@@ -37,6 +37,8 @@ const Menu = ({
 }) => {
   const [isHost, setIsHost] = useState(false);
 
+  const usedColours = multiplayer.players.map(p => p.color);
+
   const handleHostClick = useCallback(() => {
     setRoomCode("");
     setIsHost(true);
@@ -70,6 +72,7 @@ const Menu = ({
                   colour={colour}
                   onClick={() => setPlayerColor(colour)}
                   isSelected={character.color === colour}
+                  isUnavailable={usedColours.includes(colour)}
                 />
               </Grid>
             );
