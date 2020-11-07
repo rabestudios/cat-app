@@ -5,7 +5,7 @@ export const CAT_COLOURS = {
   red: "#f60505",
   black: "#565656",
   lime: "#8ce724",
-  cyan: "#00fddd",
+  cyan: "#47b8aa",
   brown: "#72492e",
   purple: "#9424f8",
   white: "#c8c8c8",

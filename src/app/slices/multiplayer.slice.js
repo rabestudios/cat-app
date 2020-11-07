@@ -4,7 +4,7 @@ import { CAT_COLOURS } from "constants/character";
 const multiplayerSlice = createSlice({
   name: "multiplayer",
   initialState: {
-    roomCode: null,
+    roomCode: "",
     players: [
       {
         id: "player2",
@@ -31,9 +31,16 @@ const multiplayerSlice = createSlice({
         state.players.splice(delIdx, 1);
       }
     },
+    setRoomCode(state, action) {
+      state.roomCode = action.payload;
+    },
   },
 });
 
-export const { addPlayer, removePlayer } = multiplayerSlice.actions;
+export const {
+  addPlayer,
+  removePlayer,
+  setRoomCode,
+} = multiplayerSlice.actions;
 
 export default multiplayerSlice.reducer;

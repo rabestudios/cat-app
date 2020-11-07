@@ -15,9 +15,17 @@ const characterSlice = createSlice({
       state.x += x;
       state.y += y;
     },
+    setPlayerName(state, action) {
+      const name = action.payload;
+      state.id = name;
+    },
+    setPlayerColor(state, action) {
+      const color = action.payload;
+      state.color = color;
+    },
   },
 });
 
-export const { move } = characterSlice.actions;
+export const { move, setPlayerName, setPlayerColor } = characterSlice.actions;
 
 export default characterSlice.reducer;

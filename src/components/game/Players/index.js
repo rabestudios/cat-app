@@ -6,7 +6,7 @@ const Players = ({ players, loadCharacter }) => {
     <>
       {players.map(player => (
         <Character
-          id={player.id}
+          key={player.id}
           color={player.color}
           x={player.x}
           y={player.y}
