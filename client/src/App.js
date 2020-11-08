@@ -4,6 +4,8 @@ import TileView from "components/game/TileView/container";
 import AppBar from "components/ui/AppBar";
 import styled from "styled-components";
 import Menu from "components/ui/Menu/container";
+import config from "config";
+import useSocket from "hooks/useSocket";
 
 const GameContainer = styled.div`
   display: flex;
@@ -18,7 +20,9 @@ const BodyContainer = styled.div`
   flex-direction: row;
 `;
 
-function App() {
+const App = () => {
+  useSocket(config.server.baseUrl);
+
   return (
     <>
       <header />
@@ -35,6 +39,6 @@ function App() {
       </main>
     </>
   );
-}
+};
 
 export default App;
