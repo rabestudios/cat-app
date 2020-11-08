@@ -56,7 +56,7 @@ const Menu = ({
           label="Player Name"
           variant="outlined"
           size="small"
-          value={character.id}
+          value={character.displayName}
           onChange={e => setPlayerName(e.target.value)}
         />
         <Typography variant="body2" style={{ marginTop: 10 }}>

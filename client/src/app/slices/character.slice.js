@@ -4,7 +4,7 @@ import { CAT_COLOURS } from "constants/character";
 const characterSlice = createSlice({
   name: "character",
   initialState: {
-    id: "myplayer",
+    displayName: "myplayer",
     x: 6,
     y: 6,
     color: CAT_COLOURS.red,
@@ -17,7 +17,7 @@ const characterSlice = createSlice({
     },
     setPlayerName(state, action) {
       const name = action.payload;
-      state.id = name;
+      state.displayName = name;
     },
     setPlayerColor(state, action) {
       const color = action.payload;

@@ -7,13 +7,13 @@ const multiplayerSlice = createSlice({
     roomCode: "",
     players: [
       {
-        id: "player2",
+        displayName: "player2",
         x: 1,
         y: 1,
         color: CAT_COLOURS.blue,
       },
       {
-        id: "player3",
+        displayName: "player3",
         x: 2,
         y: 1,
         color: CAT_COLOURS.black,
