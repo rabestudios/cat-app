@@ -1,14 +1,19 @@
-import { useEffect } from "react";
 import socketIOClient from "socket.io-client";
 
-let socket;
+let socket; // global var
 
-const useSocket = endpoint => {
-  useEffect(() => {
-    if (endpoint) {
-      socket = socketIOClient(endpoint);
+const useSocket = (endpoint, data) => {
+  if (!socket) {
+    let options;
+    if (data) {
+      const queryStr = Object.keys(data).map(key => {
+        const value = data[key];
+        return `${key}=${value}`;
+      }).join('&');
+      options = { query: queryStr };
     }
-  }, [endpoint]);
+    socket = socketIOClient(endpoint, options);
+  }
 
   return socket;
 };

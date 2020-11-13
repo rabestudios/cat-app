@@ -1,4 +1,5 @@
 import React from "react";
+import { connect } from "react-redux";
 import GameLoop from "components/game/GameLoop/container";
 import TileView from "components/game/TileView/container";
 import AppBar from "components/ui/AppBar";
@@ -20,8 +21,20 @@ const BodyContainer = styled.div`
   flex-direction: row;
 `;
 
-const App = () => {
-  useSocket(config.server.baseUrl);
+const App = ({character}) => {
+  const data = {
+    displayName: character.displayName,
+    color: character.color
+  };
+
+  const socket = useSocket(config.server.baseUrl, data);
+
+  if (socket) {
+    socket.on('update-user-list', ({users}) => {
+      console.log(users);
+    });
+  }
+
 
   return (
     <>
@@ -41,4 +54,8 @@ const App = () => {
   );
 };
 
-export default App;
+const mapStateToProps = ({character}) => ({
+  character
+});
+
+export default connect(mapStateToProps)(App);

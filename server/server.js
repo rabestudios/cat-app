@@ -21,18 +21,37 @@ const options = {
 const io = socketIO(server, options);
 
 // SAMPLE_MIDDLEWARE
-// io.use((socket, next) => {
-//    const handshakeData = socket.request;
-//    console.log('middleware', handshakeData._query['foo']);
-//    console.log('middleware', handshakeData._query['baz']);
-//    next();
-// });
+io.use((socket, next) => {
+   const handshakeData = socket.request;
+   const playerInfo = {
+      displayName: handshakeData._query['displayName'],
+      color: handshakeData._query['color']
+   };
+   socket.playerInfo = playerInfo;
+   next();
+});
 
 io.on('connection', socket => {
-   console.log('user connected', socket.id);
+   console.log('user connected', socket.id, socket.playerInfo);
+   const existingSocket = db.getUsers().find(user => user.id === socket.id);
+
+   if (!existingSocket) {
+      db.addUser(socket.playerInfo, socket);
+      const activeSockets = db.getUsers();
+      const user = db.getUser(socket.id);
+      const users = activeSockets.filter(sock => sock.id !== socket.id)
+      socket.emit('update-user-list', { users });
+      // socket.broadcast.emit('update-user-list', {
+      //    users: [user]
+      // });
+   }
 
    socket.on('disconnect', () => {
-      console.log('socket disconnected', socket.id);
+      console.log('user disconnected', socket.id);
+      db.disconnectUser(socket.id);
+      // socket.broadcast.emit('disconnect-user', {
+      //    socketId: socket.id
+      // });
    });
 });
 
