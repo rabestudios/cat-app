@@ -4,6 +4,7 @@ const multiplayerSlice = createSlice({
   name: "multiplayer",
   initialState: {
     onlineUsers: [],
+    onlineRooms: [],
     isConnected: false,
     room: {
       code: "",
@@ -12,6 +13,9 @@ const multiplayerSlice = createSlice({
     },
   },
   reducers: {
+    setIsConnected(state, action) {
+      state.isConnected = action.payload;
+    },
     setRoom(state, action) {
       state.room = action.payload;
     },
@@ -31,10 +35,37 @@ const multiplayerSlice = createSlice({
       if (uIdx >= 0) {
         state.onlineUsers.splice(uIdx, 1);
       }
-    }
+    },
+    updateRoomList(state, action) {
+      const onlineRooms = state.onlineRooms;
+      const serverRooms = action.payload;
+      // add new rooms
+      for (const sRoom of serverRooms) {
+        const roomIdx = onlineRooms.findIndex(
+          oRoom => oRoom.code === sRoom.code,
+        );
+        if (roomIdx === -1) {
+          state.onlineRooms.push(sRoom);
+        } else {
+          state.onlineRooms[roomIdx] = sRoom;
+        }
+      }
+    },
+    removeRoom(state, action) {
+      const roomCode = action.payload;
+      const rIdx = state.onlineRooms.findIndex(room => room.code === roomCode);
+      state.onlineRooms.splice(rIdx, 1);
+    },
   },
 });
 
-export const { setRoom, updateUserList, removeUser } = multiplayerSlice.actions;
+export const {
+  setRoom,
+  updateUserList,
+  removeUser,
+  updateRoomList,
+  removeRoom,
+  setIsConnected
+} = multiplayerSlice.actions;
 
 export default multiplayerSlice.reducer;

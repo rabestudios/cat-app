@@ -10,6 +10,7 @@ import {
 import { CAT_COLOURS } from "constants/character";
 import ColourButton from "components/ui/Menu/ColourButton";
 import { SPAWN_COORDS } from "constants/map";
+import useSocket from "hooks/useSocket";
 
 const MainContainer = styled.div`
   display: flex;
@@ -37,16 +38,24 @@ const Menu = ({
   setPlayerPosition,
   setIsUpdateRequired,
   onlineUsers,
+  isConnected,
+  room,
 }) => {
   const [isHost, setIsHost] = useState(false);
   const [roomCode, setRoomCode] = useState("");
 
+  const socket = useSocket();
+
   const usedColours = players.map(p => p.color);
 
   const handleHostClick = useCallback(() => {
-    setRoomCode("");
-    setIsHost(true);
-  }, [setIsHost, setRoomCode]);
+    if (!isConnected) {
+      setIsHost(true);
+      if (socket) {
+        socket.emit("host-room", { hostId: socket.id });
+      }
+    }
+  }, [isConnected, setIsHost, socket]);
 
   const handleJoinClick = useCallback(() => {
     setIsHost(false);
@@ -99,10 +108,16 @@ const Menu = ({
           You are {isHost ? "hosting" : "joining"}
         </Typography>
         <ButtonGroup style={{ marginTop: 10 }}>
-          <Button variant="contained" color="primary" onClick={handleHostClick}>
+          <Button
+            variant="contained"
+            color="primary"
+            onClick={handleHostClick}
+            disabled={isConnected}
+          >
             Host
           </Button>
           <Button
+            disabled={isConnected}
             variant="contained"
             color="secondary"
             onClick={handleJoinClick}
@@ -111,19 +126,19 @@ const Menu = ({
           </Button>
         </ButtonGroup>
         <RoomInfoContainer>
-          <Typography variant="body2">
-            {isHost ? "Room Code" : "Enter Room Code"}
-          </Typography>
           <TextField
-            label="Room Code"
+            label={isHost ? "Room Code" : "Enter Room Code"}
             variant="outlined"
-            disabled={isHost}
+            disabled={isHost || isConnected}
             size="small"
             style={{ marginBottom: 10 }}
             onChange={e => setRoomCode(e.target.value)}
-            value={roomCode}
+            value={isConnected ? room.code : roomCode}
           />
-          {!isHost && <Button variant="contained">Confirm</Button>}
+          {!isHost && !isConnected && (
+            <Button variant="contained">Confirm</Button>
+          )}
+          {isConnected && <Button variant="contained">Leave</Button>}
         </RoomInfoContainer>
       </OptionsContainer>
     </MainContainer>

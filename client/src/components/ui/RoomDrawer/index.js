@@ -9,20 +9,7 @@ import {
 import { VideogameAsset } from "@material-ui/icons";
 import RoomItem from "components/ui/RoomDrawer/RoomItem";
 
-const rooms = [
-  {
-    code: "AXVSDD",
-    players: ["me", "me", "me", "me", "me", "me", "me", "me", "me"],
-    hostId: "",
-  },
-  {
-    code: "AVCDDF",
-    players: ["me"],
-    hostId: "",
-  },
-];
-
-const RoomDrawer = () => {
+const RoomDrawer = ({ rooms }) => {
   const [isOpen, setIsOpen] = useState(false);
 
   const toggleDrawer = isOpen => event => {
