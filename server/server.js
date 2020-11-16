@@ -52,9 +52,9 @@ io.on('connection', socket => {
    socket.on('disconnect', () => {
       console.log('user disconnected', socket.id);
       db.disconnectUser(socket.id);
-      // socket.broadcast.emit('disconnect-user', {
-      //    socketId: socket.id
-      // });
+      socket.broadcast.emit('disconnect-user', {
+         socketId: socket.id
+      });
    });
 });
 

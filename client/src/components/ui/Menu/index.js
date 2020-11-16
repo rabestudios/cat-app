@@ -58,8 +58,8 @@ const Menu = ({
     onlineUsers.length === 0
       ? "No users online"
       : onlineUsers.length > 1
-      ? `There are ${onlineUsers.length} users online`
-      : `There is ${onlineUsers.length} user online`;
+      ? `There are ${onlineUsers.length} other users online`
+      : `There is ${onlineUsers.length} other user online`;
 
   return (
     <MainContainer>

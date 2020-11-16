@@ -7,12 +7,16 @@ import config from "config";
 import useSocket from "hooks/useSocket";
 import { GameContainer, BodyContainer } from "./styles";
 
-const App = ({ character, updateUserList }) => {
+const App = ({ character, updateUserList, removeUser }) => {
   const socket = useSocket(config.server.baseUrl, character);
 
   if (socket) {
     socket.on("update-user-list", ({ users }) => {
       updateUserList(users);
+    });
+
+    socket.on("disconnect-user", ({ socketId }) => {
+      removeUser(socketId);
     });
   }
 
