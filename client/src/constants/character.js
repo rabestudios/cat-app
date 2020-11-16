@@ -16,3 +16,5 @@ export const CAT_COLOURS = {
 export const CAT_SPRITE = "assets/heroes/cat.svg";
 
 export const CHAR_SIZE = 16;
+
+export const MAX_PLAYERS = 10;
