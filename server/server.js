@@ -23,9 +23,12 @@ const io = socketIO(server, options);
 // SAMPLE_MIDDLEWARE
 io.use((socket, next) => {
    const handshakeData = socket.request;
+   const query = handshakeData._query;
    const playerInfo = {
-      displayName: handshakeData._query['displayName'],
-      color: handshakeData._query['color']
+      displayName: query.displayName,
+      color: query.color,
+      x: query.x,
+      y: query.y,
    };
    socket.playerInfo = playerInfo;
    next();

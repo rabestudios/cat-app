@@ -3,11 +3,16 @@ import { MAP_DIMENSIONS, MOVE_DIRECTIONS, TILE_SIZE } from "constants/map";
 import { checkMapCollision } from "utils";
 import CanvasContext from "context/canvas.context";
 
-const GameLoop = ({ children, character, move }) => {
+const GameLoop = ({
+  children,
+  character,
+  move,
+  setIsUpdateRequired,
+  isUpdateRequired,
+}) => {
   const canvasRef = useRef(null);
   const [ctx, setCtx] = useState(null);
   const [isVisible, setIsVisible] = useState(true);
-  const [isUpdateRequired, setIsUpdateRequired] = useState(false);
   const loopRef = useRef();
 
   const width = MAP_DIMENSIONS.COLS * TILE_SIZE;
@@ -24,7 +29,7 @@ const GameLoop = ({ children, character, move }) => {
         }
       }
     },
-    [move, character.x, character.y],
+    [move, character.x, character.y, setIsUpdateRequired],
   );
 
   const tick = useCallback(() => {

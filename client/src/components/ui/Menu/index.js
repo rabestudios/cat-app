@@ -9,6 +9,7 @@ import {
 } from "@material-ui/core";
 import { CAT_COLOURS } from "constants/character";
 import ColourButton from "components/ui/Menu/ColourButton";
+import { SPAWN_COORDS } from "constants/map";
 
 const MainContainer = styled.div`
   display: flex;
@@ -30,14 +31,16 @@ const RoomInfoContainer = styled.div`
 
 const Menu = ({
   character,
-  multiplayer,
+  players,
   setPlayerName,
   setPlayerColor,
-  setRoomCode,
+  setPlayerPosition,
+  setIsUpdateRequired,
 }) => {
   const [isHost, setIsHost] = useState(false);
+  const [roomCode, setRoomCode] = useState("");
 
-  const usedColours = multiplayer.players.map(p => p.color);
+  const usedColours = players.map(p => p.color);
 
   const handleHostClick = useCallback(() => {
     setRoomCode("");
@@ -46,7 +49,9 @@ const Menu = ({
 
   const handleJoinClick = useCallback(() => {
     setIsHost(false);
-  }, [setIsHost]);
+    setPlayerPosition(SPAWN_COORDS);
+    setIsUpdateRequired(true);
+  }, [setIsHost, setPlayerPosition, setIsUpdateRequired]);
 
   return (
     <MainContainer>
@@ -107,7 +112,7 @@ const Menu = ({
             size="small"
             style={{ marginBottom: 10 }}
             onChange={e => setRoomCode(e.target.value)}
-            value={multiplayer.roomCode}
+            value={roomCode}
           />
           {!isHost && <Button variant="contained">Confirm</Button>}
         </RoomInfoContainer>

@@ -1,5 +1,5 @@
 import { connect } from "react-redux";
-import { loadCharacter } from "app/slices/status.slice";
+import { loadCharacter } from "redux/slices/status.slice";
 import Players from "components/game/Players/index";
 
 const mapStateToProps = state => ({ ...state.multiplayer });

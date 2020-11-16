@@ -21,8 +21,7 @@ class Database {
     addUser(player, socket) {
         const user = {
             id: socket.id,
-            playerInfo: player,
-            socket
+            playerInfo: player
         }
         this.users.push(user);
         return user;

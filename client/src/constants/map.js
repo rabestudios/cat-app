@@ -1,5 +1,10 @@
 export const TILE_SIZE = 50;
 
+export const SPAWN_COORDS = {
+  x: 1,
+  y: 1,
+};
+
 export const MAP_DIMENSIONS = {
   COLS: 12,
   ROWS: 12,
