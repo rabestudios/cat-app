@@ -56,6 +56,17 @@ io.on('connection', socket => {
          socketId: socket.id
       });
    });
+
+   socket.on('host-room', (data) => {
+      console.log('user started hosting a game: ', data.hostId);
+      const newRoom = db.createRoom(data.hostId);
+      const rooms = db.getRooms();
+      socket.emit('set-connection', { isConnected: true, room: newRoom });
+      socket.emit('update-room-list', { rooms });
+      socket.broadcast.emit('update-room-list', {
+         rooms: [newRoom]
+      });
+   });
 });
 
 const PORT = process.env.PORT || 8080;

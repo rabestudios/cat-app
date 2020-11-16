@@ -11,6 +11,8 @@ const mapStateToProps = ({ character, multiplayer }) => ({
   character,
   players: multiplayer.room.players,
   onlineUsers: multiplayer.onlineUsers,
+  isConnected: multiplayer.isConnected,
+  room: multiplayer.room,
 });
 
 const mapDispatch = {
