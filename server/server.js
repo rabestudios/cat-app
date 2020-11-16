@@ -44,9 +44,9 @@ io.on('connection', socket => {
       const user = db.getUser(socket.id);
       const users = activeSockets.filter(sock => sock.id !== socket.id)
       socket.emit('update-user-list', { users });
-      // socket.broadcast.emit('update-user-list', {
-      //    users: [user]
-      // });
+      socket.broadcast.emit('update-user-list', {
+         users: [user]
+      });
    }
 
    socket.on('disconnect', () => {

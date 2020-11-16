@@ -10,6 +10,7 @@ import { setIsUpdateRequired } from "redux/slices/status.slice";
 const mapStateToProps = ({ character, multiplayer }) => ({
   character,
   players: multiplayer.room.players,
+  onlineUsers: multiplayer.onlineUsers,
 });
 
 const mapDispatch = {

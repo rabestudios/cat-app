@@ -36,6 +36,7 @@ const Menu = ({
   setPlayerColor,
   setPlayerPosition,
   setIsUpdateRequired,
+  onlineUsers,
 }) => {
   const [isHost, setIsHost] = useState(false);
   const [roomCode, setRoomCode] = useState("");
@@ -52,6 +53,13 @@ const Menu = ({
     setPlayerPosition(SPAWN_COORDS);
     setIsUpdateRequired(true);
   }, [setIsHost, setPlayerPosition, setIsUpdateRequired]);
+
+  const onlineUsersText =
+    onlineUsers.length === 0
+      ? "No users online"
+      : onlineUsers.length > 1
+      ? `There are ${onlineUsers.length} users online`
+      : `There is ${onlineUsers.length} user online`;
 
   return (
     <MainContainer>
@@ -86,6 +94,7 @@ const Menu = ({
       </OptionsContainer>
       <OptionsContainer>
         <HeaderText variant="h6">Multiplayer</HeaderText>
+        <Typography variant="body1">{onlineUsersText}</Typography>
         <Typography variant="body1">
           You are {isHost ? "hosting" : "joining"}
         </Typography>
