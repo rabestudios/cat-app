@@ -40,8 +40,10 @@ const Menu = ({
   onlineUsers,
   isConnected,
   room,
+  isHost,
+  setIsHost,
+  disconnectFromRoom,
 }) => {
-  const [isHost, setIsHost] = useState(false);
   const [roomCode, setRoomCode] = useState("");
 
   const socket = useSocket();
@@ -59,6 +61,9 @@ const Menu = ({
 
   const handleJoinClick = useCallback(() => {
     setIsHost(false);
+  }, [setIsHost]);
+
+  const handleJoinConfirm = useCallback(() => {
     setPlayerPosition(SPAWN_COORDS);
     setIsUpdateRequired(true);
     const playerInfo = { ...character, ...SPAWN_COORDS };
@@ -69,14 +74,17 @@ const Menu = ({
         playerInfo,
       });
     }
-  }, [
-    setIsHost,
-    setPlayerPosition,
-    setIsUpdateRequired,
-    socket,
-    character,
-    roomCode,
-  ]);
+  }, [setPlayerPosition, setIsUpdateRequired, character, socket, roomCode]);
+
+  const handleLeaveRoom = useCallback(() => {
+    if (socket) {
+      socket.emit("leave-room", {
+        roomCode: room.code,
+        playerId: socket.id,
+      });
+      disconnectFromRoom();
+    }
+  }, [socket, disconnectFromRoom, room]);
 
   const onlineUsersText =
     onlineUsers.length === 0
@@ -151,9 +159,15 @@ const Menu = ({
             value={isConnected ? room.code : roomCode}
           />
           {!isHost && !isConnected && (
-            <Button variant="contained">Confirm</Button>
+            <Button variant="contained" onClick={handleJoinConfirm}>
+              Confirm
+            </Button>
           )}
-          {isConnected && <Button variant="contained">Leave</Button>}
+          {isConnected && (
+            <Button variant="contained" onClick={handleLeaveRoom}>
+              Leave
+            </Button>
+          )}
         </RoomInfoContainer>
       </OptionsContainer>
     </MainContainer>

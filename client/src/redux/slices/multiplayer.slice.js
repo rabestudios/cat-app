@@ -6,6 +6,7 @@ const multiplayerSlice = createSlice({
     onlineUsers: [],
     onlineRooms: [],
     isConnected: false,
+    isHost: false,
     room: {
       code: "",
       players: [],
@@ -13,11 +14,17 @@ const multiplayerSlice = createSlice({
     },
   },
   reducers: {
+    setIsHost(state, action) {
+      state.isHost = action.payload;
+    },
     setIsConnected(state, action) {
       state.isConnected = action.payload;
     },
     setRoom(state, action) {
       state.room = action.payload;
+    },
+    setRoomHost(state, action) {
+      state.room.hostId = action.payload;
     },
     addPlayerToRoom(state, action) {
       const player = action.payload;
@@ -25,12 +32,21 @@ const multiplayerSlice = createSlice({
         state.room.players.push(player);
       }
     },
+    removePlayerFromRoom(state, action) {
+      const playerId = action.payload;
+      const playerIdx = state.room.players.findIndex(
+        player => player.id === playerId,
+      );
+      if (playerIdx !== -1) {
+        state.room.players.splice(playerIdx, 1);
+      }
+    },
     updateUserList(state, action) {
       const onlineUsers = state.onlineUsers;
       const serverUsers = action.payload;
       // add new users
       for (const sUser of serverUsers) {
-        const uIdx = onlineUsers.findIndex(oUser => oUser.id === sUser.id)
+        const uIdx = onlineUsers.findIndex(oUser => oUser.id === sUser.id);
         if (uIdx === -1) {
           state.onlineUsers.push(sUser);
         } else {
@@ -44,6 +60,14 @@ const multiplayerSlice = createSlice({
       if (uIdx >= 0) {
         state.onlineUsers.splice(uIdx, 1);
       }
+    },
+    disconnectFromRoom(state) {
+      state.room = {
+        code: "",
+        players: [],
+        hostId: undefined,
+      };
+      state.isConnected = false;
     },
     updateRoomList(state, action) {
       const onlineRooms = state.onlineRooms;
@@ -75,7 +99,11 @@ export const {
   updateRoomList,
   removeRoom,
   setIsConnected,
-  addPlayerToRoom
+  addPlayerToRoom,
+  setRoomHost,
+  disconnectFromRoom,
+  removePlayerFromRoom,
+  setIsHost
 } = multiplayerSlice.actions;
 
 export default multiplayerSlice.reducer;

@@ -45,7 +45,9 @@ io.on('connection', socket => {
       const activeSockets = db.getUsers();
       const user = db.getUser(socket.id);
       const users = activeSockets.filter(sock => sock.id !== socket.id)
+      const rooms = db.getRooms();
       socket.emit('update-user-list', { users });
+      socket.emit('update-room-list', { rooms });
       socket.broadcast.emit('update-user-list', {
          users: [user]
       });
@@ -53,10 +55,13 @@ io.on('connection', socket => {
 
    socket.on('disconnect', () => {
       console.log('user disconnected', socket.id);
-      db.disconnectUser(socket.id);
+      const rooms = db.disconnectUser(socket.id);
       socket.broadcast.emit('disconnect-user', {
          socketId: socket.id
       });
+      if (rooms !== undefined) {
+         socket.broadcast.emit('update-room-list', { rooms });
+      }
    });
 
    socket.on('host-room', (data) => {
@@ -88,9 +93,9 @@ io.on('connection', socket => {
 
    socket.on('leave-room', (data) => {
       const { roomCode, playerId } = data;
-      db.removePlayerFromRoom(roomCode, socket.id);
+      const host = db.removePlayerFromRoom(roomCode, socket.id);
       const user = db.getUser(playerId);
-      leaveRoom(socket, roomCode, user);
+      leaveRoom(socket, roomCode, user, host);
    });
 
 });
