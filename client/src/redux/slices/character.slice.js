@@ -28,6 +28,13 @@ const characterSlice = createSlice({
       state.x = x;
       state.y = y;
     },
+    setPlayerInfo(state, action) {
+      const newInfo = action.payload;
+      state.x = newInfo.x;
+      state.y = newInfo.y;
+      state.displayName = newInfo.displayName;
+      state.color = newInfo.color;
+    }
   },
 });
 
@@ -36,6 +43,7 @@ export const {
   setPlayerName,
   setPlayerColor,
   setPlayerPosition,
+  setPlayerInfo
 } = characterSlice.actions;
 
 export default characterSlice.reducer;

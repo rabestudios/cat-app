@@ -94,10 +94,15 @@ class Database {
             }
             this.rooms[roomIdx] = room;
         }
-        // update player display name
-        const player = this.getUser(playerId);
-        player.playerInfo.displayName = player.id;
-        return player;
+    }
+
+    setUserInfo(playerId, playerInfo) {
+        const uIdx = this.users.findIndex(user => user.id === playerId);
+        if (uIdx !== -1) {
+            const currentInfo = this.users[uIdx].playerInfo;
+            this.users[uIdx].playerInfo = {...currentInfo, ...playerInfo};
+        }
+        return this.users[uIdx];
     }
 }
 

@@ -14,7 +14,10 @@ const App = ({
   updateRoomList,
   removeRoom,
   setIsConnected,
-  setRoom
+  setRoom,
+  setPlayerInfo,
+  setIsUpdateRequired,
+  addPlayerToRoom,
 }) => {
   const socket = useSocket(config.server.baseUrl, character);
 
@@ -35,9 +38,17 @@ const App = ({
       removeRoom(roomCode);
     });
 
-    socket.on("set-connection", ({ isConnected, room }) => {
+    socket.on("set-connection", ({ isConnected, room, playerInfo }) => {
       setIsConnected(isConnected);
       setRoom(room);
+      setPlayerInfo(playerInfo);
+      setIsUpdateRequired(true);
+    });
+
+    socket.on("room-connect", ({ player }) => {
+      if (player.id !== socket.id) {
+        addPlayerToRoom(player);
+      }
     });
   }
 

@@ -19,13 +19,22 @@ const multiplayerSlice = createSlice({
     setRoom(state, action) {
       state.room = action.payload;
     },
+    addPlayerToRoom(state, action) {
+      const player = action.payload;
+      if (state.room) {
+        state.room.players.push(player);
+      }
+    },
     updateUserList(state, action) {
       const onlineUsers = state.onlineUsers;
       const serverUsers = action.payload;
       // add new users
       for (const sUser of serverUsers) {
-        if (!onlineUsers.find(oUser => oUser.id === sUser.id)) {
+        const uIdx = onlineUsers.findIndex(oUser => oUser.id === sUser.id)
+        if (uIdx === -1) {
           state.onlineUsers.push(sUser);
+        } else {
+          state.onlineUsers[uIdx] = sUser;
         }
       }
     },
@@ -65,7 +74,8 @@ export const {
   removeUser,
   updateRoomList,
   removeRoom,
-  setIsConnected
+  setIsConnected,
+  addPlayerToRoom
 } = multiplayerSlice.actions;
 
 export default multiplayerSlice.reducer;

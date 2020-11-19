@@ -61,7 +61,22 @@ const Menu = ({
     setIsHost(false);
     setPlayerPosition(SPAWN_COORDS);
     setIsUpdateRequired(true);
-  }, [setIsHost, setPlayerPosition, setIsUpdateRequired]);
+    const playerInfo = { ...character, ...SPAWN_COORDS };
+    if (socket && roomCode) {
+      socket.emit("join-room", {
+        playerId: socket.id,
+        roomCode,
+        playerInfo,
+      });
+    }
+  }, [
+    setIsHost,
+    setPlayerPosition,
+    setIsUpdateRequired,
+    socket,
+    character,
+    roomCode,
+  ]);
 
   const onlineUsersText =
     onlineUsers.length === 0

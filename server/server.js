@@ -8,6 +8,8 @@ const corsOptions = require('./src/utils/cors.options');
 
 const db = require('./src/database')();
 
+const { joinRoom, leaveRoom } = require('./src/socket');
+
 const app = express();
 
 // middleware setup
@@ -27,8 +29,8 @@ io.use((socket, next) => {
    const playerInfo = {
       displayName: query.displayName,
       color: query.color,
-      x: query.x,
-      y: query.y,
+      x: parseInt(query.x),
+      y: parseInt(query.y),
    };
    socket.playerInfo = playerInfo;
    next();
@@ -61,12 +63,36 @@ io.on('connection', socket => {
       console.log('user started hosting a game: ', data.hostId);
       const newRoom = db.createRoom(data.hostId);
       const rooms = db.getRooms();
-      socket.emit('set-connection', { isConnected: true, room: newRoom });
+      const user = db.getUser(data.hostId);
+      joinRoom(socket, newRoom, user);
       socket.emit('update-room-list', { rooms });
       socket.broadcast.emit('update-room-list', {
          rooms: [newRoom]
       });
    });
+
+   socket.on('join-room', (data) => {
+      const { playerId, roomCode, playerInfo } = data;
+      const user = db.setUserInfo(playerId, playerInfo);
+      if (user) {
+         const res = db.addPlayerToRoom(roomCode, playerId);
+         if (res) {
+            const { newDetails, room } = res;
+            const updatedUser = db.setUserInfo(playerId, newDetails);
+            if (updatedUser) {
+               joinRoom(socket, room, updatedUser);
+            }
+         }
+      }
+   });
+
+   socket.on('leave-room', (data) => {
+      const { roomCode, playerId } = data;
+      db.removePlayerFromRoom(roomCode, socket.id);
+      const user = db.getUser(playerId);
+      leaveRoom(socket, roomCode, user);
+   });
+
 });
 
 const PORT = process.env.PORT || 8080;
