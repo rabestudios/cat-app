@@ -1,4 +1,4 @@
-import React, { useCallback, useState } from "react";
+import React, { useCallback, useMemo, useState } from "react";
 import styled from "styled-components";
 import {
   Typography,
@@ -48,7 +48,15 @@ const Menu = ({
 
   const socket = useSocket();
 
-  const usedColours = players.map(p => p.color);
+  const usedColours = useMemo(() => {
+    if (socket) {
+      return players
+        .filter(p => p.id !== socket.id)
+        .map(p => p.playerInfo.color);
+    } else {
+      return [];
+    }
+  }, [socket, players]);
 
   const handleHostClick = useCallback(() => {
     if (!isConnected) {
