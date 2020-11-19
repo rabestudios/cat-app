@@ -14,7 +14,13 @@ const App = ({
   updateRoomList,
   removeRoom,
   setIsConnected,
-  setRoom
+  setRoom,
+  setPlayerInfo,
+  setIsUpdateRequired,
+  addPlayerToRoom,
+  removePlayerFromRoom,
+  setRoomHost,
+  setIsHost,
 }) => {
   const socket = useSocket(config.server.baseUrl, character);
 
@@ -29,15 +35,34 @@ const App = ({
 
     socket.on("disconnect-user", ({ socketId }) => {
       removeUser(socketId);
+      removePlayerFromRoom(socketId);
     });
 
     socket.on("remove-room", ({ roomCode }) => {
       removeRoom(roomCode);
     });
 
-    socket.on("set-connection", ({ isConnected, room }) => {
+    socket.on("set-connection", ({ isConnected, room, playerInfo }) => {
       setIsConnected(isConnected);
       setRoom(room);
+      setPlayerInfo(playerInfo);
+      setIsUpdateRequired(true);
+    });
+
+    socket.on("room-connect", ({ player }) => {
+      if (player.id !== socket.id) {
+        addPlayerToRoom(player);
+        setIsUpdateRequired(true);
+      }
+    });
+
+    socket.on("room-disconnect", ({ playerId, host }) => {
+      removePlayerFromRoom(playerId);
+      setRoomHost(host);
+      if (host === socket.id) {
+        setIsHost(true);
+      }
+      setIsUpdateRequired(true);
     });
   }
 

@@ -32,6 +32,14 @@ class Database {
         if (delIdx >= 0) {
             this.users.splice(delIdx, 1);
         }
+        for (const room of this.rooms) {
+            const playerIdx = room.players.findIndex(p => p.id === userId);
+            if (playerIdx !== -1) {
+                room.players.splice(playerIdx, 1);
+                return this.rooms;
+            }
+        }
+        return undefined;
     }
 
     getRooms() {
@@ -87,17 +95,25 @@ class Database {
             // decommission room if no more players
             if (room.players.length === 0) {
                 this.rooms.splice(roomIdx, 1);
-                return;
+                return undefined;
             } else if (room.hostId === playerId) {
                 // reassign host
                 room.hostId = room.players[0].id;
+                return room.hostId;
             }
             this.rooms[roomIdx] = room;
+            return room.hostId;
         }
-        // update player display name
-        const player = this.getUser(playerId);
-        player.playerInfo.displayName = player.id;
-        return player;
+        return undefined;
+    }
+
+    setUserInfo(playerId, playerInfo) {
+        const uIdx = this.users.findIndex(user => user.id === playerId);
+        if (uIdx !== -1) {
+            const currentInfo = this.users[uIdx].playerInfo;
+            this.users[uIdx].playerInfo = {...currentInfo, ...playerInfo};
+        }
+        return this.users[uIdx];
     }
 }
 

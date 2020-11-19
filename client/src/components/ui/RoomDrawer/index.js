@@ -7,7 +7,7 @@ import {
   Typography,
 } from "@material-ui/core";
 import { VideogameAsset } from "@material-ui/icons";
-import RoomItem from "components/ui/RoomDrawer/RoomItem";
+import RoomItem from "./RoomItem/container";
 
 const RoomDrawer = ({ rooms }) => {
   const [isOpen, setIsOpen] = useState(false);

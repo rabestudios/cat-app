@@ -4,6 +4,7 @@ import CanvasContext from "context/canvas.context";
 import Grid from "components/game/Grid";
 import Map from "components/game/Map/container";
 import Character from "components/game/Character/container";
+import Players from "components/game/Players/container";
 
 const TileView = ({ gameStatus }) => {
   const width = MAP_DIMENSIONS * TILE_SIZE;
@@ -24,6 +25,7 @@ const TileView = ({ gameStatus }) => {
         </Grid>
       </>
       {gameStatus.mapLoaded && <Character />}
+      {gameStatus.mapLoaded && <Players />}
     </>
   );
 };

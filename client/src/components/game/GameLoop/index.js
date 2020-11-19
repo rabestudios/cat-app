@@ -23,7 +23,8 @@ const GameLoop = ({
       const key = e.key;
       if (MOVE_DIRECTIONS[key]) {
         const [x, y] = MOVE_DIRECTIONS[key];
-        if (!checkMapCollision(character.x + x, character.y + y)) {
+        const isColliding = checkMapCollision(character.x + x, character.y + y);
+        if (!isColliding) {
           setIsUpdateRequired(true);
           move([x, y]);
         }

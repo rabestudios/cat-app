@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useCallback } from "react";
 import {
   Avatar,
   ListItem,
@@ -9,9 +9,19 @@ import {
 } from "@material-ui/core";
 import { PlayArrow } from "@material-ui/icons";
 import { CAT_COLOURS, MAX_PLAYERS } from "constants/character";
+import { SPAWN_COORDS } from "constants/map";
+import useSocket from "hooks/useSocket";
 
-const RoomItem = ({ room }) => {
-  let avatarStyle = {
+const RoomItem = ({
+  room,
+  character,
+  isConnected,
+  setPlayerPosition,
+  setIsUpdateRequired,
+}) => {
+  const socket = useSocket();
+
+  const avatarStyle = {
     fontSize: 15,
     color: "#000",
     background: CAT_COLOURS.lime,
@@ -35,6 +45,17 @@ const RoomItem = ({ room }) => {
     avatarStyle.background = CAT_COLOURS.black;
   }
 
+  const handleJoinClick = useCallback(() => {
+    setPlayerPosition(SPAWN_COORDS);
+    setIsUpdateRequired(true);
+    const playerInfo = { ...character, ...SPAWN_COORDS };
+    socket.emit("join-room", {
+      playerId: socket.id,
+      roomCode: room.code,
+      playerInfo,
+    });
+  }, [setPlayerPosition, setIsUpdateRequired, socket, character, room]);
+
   return (
     <ListItem style={{ width: 300 }}>
       <ListItemAvatar>
@@ -44,7 +65,7 @@ const RoomItem = ({ room }) => {
       </ListItemAvatar>
       <ListItemText>{room.code}</ListItemText>
       <ListItemSecondaryAction>
-        <IconButton>
+        <IconButton disabled={isConnected} onClick={handleJoinClick}>
           <PlayArrow />
         </IconButton>
       </ListItemSecondaryAction>

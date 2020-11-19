@@ -6,6 +6,7 @@ import {
   setPlayerPosition,
 } from "redux/slices/character.slice";
 import { setIsUpdateRequired } from "redux/slices/status.slice";
+import { setIsHost, disconnectFromRoom } from "redux/slices/multiplayer.slice";
 
 const mapStateToProps = ({ character, multiplayer }) => ({
   character,
@@ -13,6 +14,7 @@ const mapStateToProps = ({ character, multiplayer }) => ({
   onlineUsers: multiplayer.onlineUsers,
   isConnected: multiplayer.isConnected,
   room: multiplayer.room,
+  isHost: multiplayer.isHost,
 });
 
 const mapDispatch = {
@@ -20,6 +22,8 @@ const mapDispatch = {
   setPlayerColor,
   setPlayerPosition,
   setIsUpdateRequired,
+  setIsHost,
+  disconnectFromRoom
 };
 
 export default connect(mapStateToProps, mapDispatch)(Menu);
