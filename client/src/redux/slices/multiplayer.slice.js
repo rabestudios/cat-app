@@ -77,6 +77,9 @@ const multiplayerSlice = createSlice({
     updateRoomList(state, action) {
       const onlineRooms = state.onlineRooms;
       const serverRooms = action.payload;
+      if (serverRooms.length === 0) {
+        state.onlineRooms = [];
+      }
       // add new rooms
       for (const sRoom of serverRooms) {
         const roomIdx = onlineRooms.findIndex(

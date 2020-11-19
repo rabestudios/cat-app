@@ -32,14 +32,6 @@ class Database {
         if (delIdx >= 0) {
             this.users.splice(delIdx, 1);
         }
-        for (const room of this.rooms) {
-            const playerIdx = room.players.findIndex(p => p.id === userId);
-            if (playerIdx !== -1) {
-                room.players.splice(playerIdx, 1);
-                return this.rooms;
-            }
-        }
-        return undefined;
     }
 
     getRooms() {
