@@ -98,6 +98,18 @@ io.on('connection', socket => {
       leaveRoom(socket, roomCode, user, host);
    });
 
+   socket.on('move-player', (data) => {
+      const { roomCode, playerId, playerInfo } = data;
+      const room = db.getRoom(roomCode);
+      if (room) {
+         // console.log("player is moving", playerId);
+         db.setUserInfo(playerId, playerInfo);
+         socket.broadcast.to(roomCode).emit('update-player', {
+            playerId,
+            playerInfo
+         });
+      }
+   });
 });
 
 const PORT = process.env.PORT || 8080;

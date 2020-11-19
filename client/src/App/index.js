@@ -21,6 +21,7 @@ const App = ({
   removePlayerFromRoom,
   setRoomHost,
   setIsHost,
+  updateRoomPlayerInfo,
 }) => {
   const socket = useSocket(config.server.baseUrl, character);
 
@@ -63,6 +64,10 @@ const App = ({
         setIsHost(true);
       }
       setIsUpdateRequired(true);
+    });
+
+    socket.on("update-player", ({ playerId, playerInfo }) => {
+      updateRoomPlayerInfo({ playerId, playerInfo });
     });
   }
 
