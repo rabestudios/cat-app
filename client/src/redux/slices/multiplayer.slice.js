@@ -29,7 +29,12 @@ const multiplayerSlice = createSlice({
     addPlayerToRoom(state, action) {
       const player = action.payload;
       if (state.room) {
-        state.room.players.push(player);
+        const playerIdx = state.room.players.findIndex(p => p.id === player.id);
+        if (playerIdx === -1) {
+          state.room.players.push(player);
+        } else {
+          state.room.players[playerIdx] = player;
+        }
       }
     },
     removePlayerFromRoom(state, action) {
@@ -72,6 +77,9 @@ const multiplayerSlice = createSlice({
     updateRoomList(state, action) {
       const onlineRooms = state.onlineRooms;
       const serverRooms = action.payload;
+      if (serverRooms.length === 0) {
+        state.onlineRooms = [];
+      }
       // add new rooms
       for (const sRoom of serverRooms) {
         const roomIdx = onlineRooms.findIndex(
@@ -89,6 +97,13 @@ const multiplayerSlice = createSlice({
       const rIdx = state.onlineRooms.findIndex(room => room.code === roomCode);
       state.onlineRooms.splice(rIdx, 1);
     },
+    updateRoomPlayerInfo(state, action) {
+      const { playerId, playerInfo } = action.payload;
+      const playerIdx = state.room.players.findIndex(p => p.id === playerId);
+      if (playerIdx !== -1) {
+        state.room.players[playerIdx].playerInfo = playerInfo;
+      }
+    },
   },
 });
 
@@ -103,7 +118,8 @@ export const {
   setRoomHost,
   disconnectFromRoom,
   removePlayerFromRoom,
-  setIsHost
+  setIsHost,
+  updateRoomPlayerInfo,
 } = multiplayerSlice.actions;
 
 export default multiplayerSlice.reducer;

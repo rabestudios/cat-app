@@ -16,13 +16,14 @@ const leaveRoom = (socket, roomCode, player, host) => {
     const roomsCount = socket.rooms.size;
     console.log(`socket room count: ${roomsCount}`);
     socket.broadcast.to(roomCode).emit('room-disconnect', {
-        playerId: player,
+        playerId: player.id,
         host: host
     });
     if (host === undefined) {
         socket.broadcast.emit('remove-room', { roomCode });
         socket.emit('remove-room', {roomCode});
     }
+    socket.broadcast.emit('update-user-list', { users: [player] })
 };
 
 

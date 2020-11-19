@@ -55,13 +55,24 @@ io.on('connection', socket => {
 
    socket.on('disconnect', () => {
       console.log('user disconnected', socket.id);
-      const rooms = db.disconnectUser(socket.id);
+      const rooms = db.getRooms();
+      // disconnect from room
+      for (const room of rooms) {
+         const playerIdx = room.players.findIndex(p => p.id === socket.id);
+         if (playerIdx !== -1) {
+            const host = db.removePlayerFromRoom(room.code, socket.id);
+            if (!host) {
+               socket.broadcast.emit('remove-room', {roomCode: room.code});
+            } else {
+               socket.broadcast.emit('update-room-list', {rooms});
+            }
+            break;
+         }
+      }
+      db.disconnectUser(socket.id);
       socket.broadcast.emit('disconnect-user', {
          socketId: socket.id
       });
-      if (rooms !== undefined) {
-         socket.broadcast.emit('update-room-list', { rooms });
-      }
    });
 
    socket.on('host-room', (data) => {
@@ -98,6 +109,18 @@ io.on('connection', socket => {
       leaveRoom(socket, roomCode, user, host);
    });
 
+   socket.on('move-player', (data) => {
+      const { roomCode, playerId, playerInfo } = data;
+      const room = db.getRoom(roomCode);
+      if (room) {
+         // console.log("player is moving", playerId);
+         db.setUserInfo(playerId, playerInfo);
+         socket.broadcast.to(roomCode).emit('update-player', {
+            playerId,
+            playerInfo
+         });
+      }
+   });
 });
 
 const PORT = process.env.PORT || 8080;

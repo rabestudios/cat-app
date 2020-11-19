@@ -4,9 +4,11 @@ import { setIsUpdateRequired } from "redux/slices/status.slice";
 
 import GameLoop from "components/game/GameLoop/index";
 
-const mapStateToProps = ({ character, gameStatus }) => ({
+const mapStateToProps = ({ character, gameStatus, multiplayer }) => ({
   character,
   isUpdateRequired: gameStatus.isUpdateRequired,
+  isConnected: multiplayer.isConnected,
+  roomCode: multiplayer.room.code,
 });
 
 const mapDispatch = { move, setIsUpdateRequired };

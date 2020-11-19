@@ -10,6 +10,7 @@ import {
   removePlayerFromRoom,
   setRoomHost,
   setIsHost,
+  updateRoomPlayerInfo,
 } from "redux/slices/multiplayer.slice";
 import { setPlayerInfo } from "redux/slices/character.slice";
 import { setIsUpdateRequired } from "redux/slices/status.slice";
@@ -32,6 +33,7 @@ const mapDispatch = {
   removePlayerFromRoom,
   setRoomHost,
   setIsHost,
+  updateRoomPlayerInfo,
 };
 
 export default connect(mapStateToProps, mapDispatch)(App);
